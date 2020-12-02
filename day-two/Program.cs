@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 
 Console.WriteLine(GetLines().Count(IsPasswordValid));
+Console.WriteLine(GetLines().Count(IsPasswordValid2));
 
 IEnumerable<Line> GetLines() => File.ReadAllLines("input.txt")
             .Select(txt =>
@@ -15,5 +16,9 @@ IEnumerable<Line> GetLines() => File.ReadAllLines("input.txt")
 
 bool IsPasswordValid(Line line) => line.Password.Count(p => p == line.Character) >= line.LowerBound
 && line.Password.Count(p => p == line.Character) <= line.UpperBound;
+
+bool IsPasswordValid2(Line line) => !(line.Password[line.LowerBound - 1] == line.Character && line.Password[line.UpperBound - 1] == line.Character)
+&&
+(line.Password[line.LowerBound - 1] == line.Character || line.Password[line.UpperBound - 1] == line.Character);
 
 public record Line(int LowerBound, int UpperBound, char Character, string Password);
