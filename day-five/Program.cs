@@ -9,6 +9,16 @@ Console.WriteLine($"{seat}: {GetSeatId(seat)}");
 var input = File.ReadAllLines("input.txt");
 Console.WriteLine($"Highest seat id: {input.Select(GetSeatId).Max()}");
 
+var orderedSeatIds = input.Select(GetSeatId).OrderBy(x => x).ToList();
+for(var i = 1; i < orderedSeatIds.Count() - 1; i++)
+{
+    if (orderedSeatIds[i+1] - orderedSeatIds[i] == 2)
+    {
+        Console.WriteLine($"My seat id is: {orderedSeatIds[i] + 1}");
+        break;
+    }
+}
+
 int GetSeatId(string seat)
 {
 
