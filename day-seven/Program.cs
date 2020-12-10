@@ -14,13 +14,32 @@ var result = FindShinyGoldHolderBags(bags, "shiny gold")
 Console.WriteLine(bags.Count);
 Console.WriteLine(result.Count());
 
+var bagsForShinyGoldBag = GetBagCount(bags, "shiny gold");
+Console.WriteLine(bagsForShinyGoldBag);
+
+int GetBagCount(IEnumerable<Bag> bags, string name)
+{
+    var total = 0;
+    var namedBag = bags.Single(b => b.Name == name);
+    foreach (var bag in namedBag.Bags)
+    {
+        var bagCount = GetBagCount(bags, bag.Name);
+        if (bagCount > 0)
+        {
+            total += bag.Quantity * bagCount;
+        }
+        total += bag.Quantity;
+    }
+    return total;
+}
+
 List<Bag> FindShinyGoldHolderBags(IEnumerable<Bag> bags, string bagName)
 {
     var filtered = bags.Where(b => b.Bags.Exists(bagItem => bagItem.Name == bagName))
                .ToList();
     var result = new List<Bag>();
     result.AddRange(filtered);
-    foreach(var filter in filtered) 
+    foreach (var filter in filtered)
     {
         result.AddRange(FindShinyGoldHolderBags(bags, filter.Name));
     }
